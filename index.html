@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoSendZap — Envio Automatizado de Mensagens via WhatsApp</title>
+    <meta name="description" content="Automatize o envio de mensagens personalizadas pelo WhatsApp Web. Sem API paga, 100% local, com modo comportamento humano anti-bloqueio.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        whatsapp: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            300: '#86efac',
+                            400: '#4ade80',
+                            500: '#25D366',
+                            600: '#128C7E',
+                            700: '#075E54',
+                            800: '#054d44',
+                            900: '#034038',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .gradient-hero {
+            background: linear-gradient(135deg, #054d44 0%, #075E54 30%, #128C7E 70%, #25D366 100%);
+        }
+        .card-highlight {
+            border: 2px solid #25D366;
+            box-shadow: 0 0 30px rgba(37, 211, 102, 0.15);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-animation { animation: float 3s ease-in-out infinite; }
+        .feature-card:hover { transform: translateY(-4px); transition: transform 0.3s ease; }
+        .feature-card { transition: transform 0.3s ease; }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans">
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 w-full bg-gray-950/90 backdrop-blur-md z-50 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg class="w-8 h-8 text-whatsapp-500" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span class="text-xl font-bold">Auto<span class="text-whatsapp-500">SendZap</span></span>
+            </div>
+            <div class="hidden md:flex items-center gap-6 text-sm text-gray-300">
+                <a href="#como-funciona" class="hover:text-whatsapp-400 transition">Como Funciona</a>
+                <a href="#features" class="hover:text-whatsapp-400 transition">Recursos</a>
+                <a href="#precos" class="hover:text-whatsapp-400 transition">Preços</a>
+                <a href="#faq" class="hover:text-whatsapp-400 transition">FAQ</a>
+            </div>
+            <a href="#precos" class="bg-whatsapp-500 hover:bg-whatsapp-600 text-white px-5 py-2 rounded-lg font-semibold text-sm transition">Começar Agora</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="gradient-hero min-h-screen flex items-center pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm mb-6">
+                    <span class="w-2 h-2 bg-whatsapp-400 rounded-full animate-pulse"></span>
+                    100% Local · Sem API Paga · Anti-Bloqueio
+                </div>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+                    Envie mensagens pelo <span class="text-whatsapp-300">WhatsApp</span> no piloto automático
+                </h1>
+                <p class="text-lg sm:text-xl text-gray-200 mb-8 leading-relaxed">
+                    Automatize o envio de mensagens personalizadas para centenas de contatos com comportamento humano real. 
+                    Sem risco de bloqueio, sem mensalidade de API.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#precos" class="bg-white text-gray-900 hover:bg-gray-100 px-8 py-4 rounded-xl font-bold text-lg text-center transition shadow-lg shadow-black/20">
+                        🚀 Quero Automatizar Agora
+                    </a>
+                    <a href="#como-funciona" class="border border-white/30 hover:border-white/60 px-8 py-4 rounded-xl font-semibold text-lg text-center transition">
+                        Ver Como Funciona
+                    </a>
+                </div>
+                <div class="mt-10 flex items-center gap-6 text-sm text-gray-300">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        Mensagens personalizadas
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        Envio de arquivos
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        Modo humano
+                    </div>
+                </div>
+            </div>
+            <div class="hidden lg:flex justify-center">
+                <div class="float-animation bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 shadow-2xl max-w-sm w-full">
+                    <div class="flex items-center gap-3 mb-4 pb-4 border-b border-gray-700/50">
+                        <div class="w-10 h-10 bg-whatsapp-500 rounded-full flex items-center justify-center text-white font-bold">A</div>
+                        <div>
+                            <p class="font-semibold text-sm">AutoSendZap</p>
+                            <p class="text-xs text-whatsapp-400">● Enviando...</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-gray-800 rounded-lg p-3 flex items-center gap-2">
+                            <span class="text-whatsapp-400">✓✓</span>
+                            <span class="text-gray-300">Oi Maria, tudo bem? Aqui é da...</span>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-3 flex items-center gap-2">
+                            <span class="text-whatsapp-400">✓✓</span>
+                            <span class="text-gray-300">Oi João, sua proposta está...</span>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-3 flex items-center gap-2">
+                            <span class="text-yellow-400">⏳</span>
+                            <span class="text-gray-300">Oi Carlos, gostaria de...</span>
+                        </div>
+                        <div class="bg-gray-800/50 rounded-lg p-3 flex items-center gap-2 opacity-50">
+                            <span class="text-gray-500">○</span>
+                            <span class="text-gray-500">Oi Ana, temos uma oferta...</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-700/50 flex justify-between text-xs text-gray-400">
+                        <span>2/4 enviadas</span>
+                        <span class="text-whatsapp-400">Rodada 1/3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- COMO FUNCIONA -->
+    <section id="como-funciona" class="py-20 sm:py-28 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Como Funciona?</h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">Três passos simples para começar a enviar mensagens automatizadas</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Passo 1 -->
+                <div class="relative bg-gray-800/50 border border-gray-700/50 rounded-2xl p-8 text-center">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-whatsapp-500 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                    <div class="w-16 h-16 mx-auto mb-6 bg-whatsapp-500/10 rounded-2xl flex items-center justify-center">
+                        <svg class="w-8 h-8 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Importe seus Contatos</h3>
+                    <p class="text-gray-400">Faça upload da sua planilha Excel com nome, número e mensagem personalizada para cada contato.</p>
+                </div>
+                <!-- Passo 2 -->
+                <div class="relative bg-gray-800/50 border border-gray-700/50 rounded-2xl p-8 text-center">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-whatsapp-500 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                    <div class="w-16 h-16 mx-auto mb-6 bg-whatsapp-500/10 rounded-2xl flex items-center justify-center">
+                        <svg class="w-8 h-8 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Configure o Envio</h3>
+                    <p class="text-gray-400">Defina rodadas, intervalos, horário comercial e ative o modo comportamento humano para máxima segurança.</p>
+                </div>
+                <!-- Passo 3 -->
+                <div class="relative bg-gray-800/50 border border-gray-700/50 rounded-2xl p-8 text-center">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-whatsapp-500 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                    <div class="w-16 h-16 mx-auto mb-6 bg-whatsapp-500/10 rounded-2xl flex items-center justify-center">
+                        <svg class="w-8 h-8 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Envie no Automático</h3>
+                    <p class="text-gray-400">Clique em iniciar e acompanhe tudo em tempo real. O sistema cuida do resto enquanto você foca no seu negócio.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- FEATURES -->
+    <section id="features" class="py-20 sm:py-28 bg-gray-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Tudo que Você Precisa para <span class="text-whatsapp-400">Vender Mais</span></h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">Recursos poderosos para automatizar seu WhatsApp com segurança e inteligência</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-gray-800/30 border border-gray-700/40 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-whatsapp-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Mensagens Personalizadas</h3>
+                    <p class="text-gray-400 text-sm">Cada contato recebe uma mensagem única com seu nome. Nada de texto genérico — pareça humano de verdade.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="feature-card bg-gray-800/30 border border-gray-700/40 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-whatsapp-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Modo Comportamento Humano</h3>
+                    <p class="text-gray-400 text-sm">Digitação caractere por caractere, pausas de pensamento, scroll aleatório e delays gaussianos. Impossível detectar.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="feature-card bg-gray-800/30 border border-gray-700/40 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-whatsapp-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Envio de Arquivos</h3>
+                    <p class="text-gray-400 text-sm">Anexe imagens, PDFs, áudios e documentos. Envie catálogos, propostas e materiais junto com sua mensagem.</p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="feature-card bg-gray-800/30 border border-gray-700/40 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-whatsapp-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Proteção Anti-Bloqueio</h3>
+                    <p class="text-gray-400 text-sm">Delays aleatórios, envio por rodadas, respeita horário comercial e pula finais de semana. Sua conta protegida.</p>
+                </div>
+                <!-- Feature 5 -->
+                <div class="feature-card bg-gray-800/30 border border-gray-700/40 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-whatsapp-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Painel em Tempo Real</h3>
+                    <p class="text-gray-400 text-sm">Acompanhe cada envio com status ao vivo, logs coloridos, contadores e progresso detalhado por rodada.</p>
+                </div>
+                <!-- Feature 6 -->
+                <div class="feature-card bg-gray-800/30 border border-gray-700/40 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-whatsapp-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Planilha Excel Inteligente</h3>
+                    <p class="text-gray-400 text-sm">Importe e exporte .xlsx com marcação automática de enviados, inválidos e timestamp. Edite direto na interface.</p>
+                </div>
+                <!-- Feature 7 -->
+                <div class="feature-card bg-gray-800/30 border border-gray-700/40 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-whatsapp-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Sessão WhatsApp Salva</h3>
+                    <p class="text-gray-400 text-sm">Escaneie o QR Code uma vez e pronto. Nas próximas vezes, o login é automático. Sem repetir o processo.</p>
+                </div>
+                <!-- Feature 8 -->
+                <div class="feature-card bg-gray-800/30 border border-gray-700/40 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-whatsapp-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">100% Local e Privado</h3>
+                    <p class="text-gray-400 text-sm">Roda no seu computador. Seus dados nunca saem da sua máquina. Sem servidores externos, sem API paga.</p>
+                </div>
+                <!-- Feature 9 -->
+                <div class="feature-card bg-gray-800/30 border border-gray-700/40 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-whatsapp-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Escala Inteligente</h3>
+                    <p class="text-gray-400 text-sm">Configure rodadas, quantidade por lote e intervalos. O sistema calcula automaticamente tempo e dias necessários.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- PREÇOS -->
+    <section id="precos" class="py-20 sm:py-28 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Escolha seu Plano</h2>
+                <p class="text-gray-400 text-lg max-w-2xl mx-auto">Invista uma fração do que você ganhará automatizando seus envios</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto items-start">
+                <!-- Plano Bronze -->
+                <div class="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-8 text-center hover:border-gray-600 transition">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-300 mb-1">Bronze</h3>
+                        <p class="text-sm text-gray-500">Mensal</p>
+                    </div>
+                    <div class="mb-6">
+                        <span class="text-4xl font-extrabold">R$97</span>
+                        <span class="text-gray-400">/mês</span>
+                    </div>
+                    <ul class="text-sm text-gray-300 space-y-3 mb-8 text-left">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Todas as funcionalidades
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Modo comportamento humano
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Envio de arquivos/mídias
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Atualizações inclusas
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Suporte por e-mail
+                        </li>
+                    </ul>
+                    <a href="https://pay.kiwify.com.br/aB368Dk" target="_blank" class="block w-full bg-gray-700 hover:bg-gray-600 text-white py-3 px-6 rounded-xl font-semibold transition">
+                        Assinar Bronze
+                    </a>
+                </div>
+
+                <!-- Plano Prata (Destacado) -->
+                <div class="card-highlight bg-gray-800/80 rounded-2xl p-8 text-center relative scale-105">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-whatsapp-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                        ⭐ MAIS POPULAR
+                    </div>
+                    <div class="mb-6 mt-2">
+                        <h3 class="text-lg font-semibold text-whatsapp-400 mb-1">Prata</h3>
+                        <p class="text-sm text-gray-500">Trimestral</p>
+                    </div>
+                    <div class="mb-2">
+                        <span class="text-4xl font-extrabold">R$247</span>
+                        <span class="text-gray-400">/trimestre</span>
+                    </div>
+                    <p class="text-sm text-whatsapp-400 mb-6">≈ R$82/mês · Economize 15%</p>
+                    <ul class="text-sm text-gray-300 space-y-3 mb-8 text-left">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Todas as funcionalidades
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Modo comportamento humano
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Envio de arquivos/mídias
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Atualizações inclusas
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Suporte prioritário
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Melhor custo-benefício
+                        </li>
+                    </ul>
+                    <a href="https://pay.kiwify.com.br/R2KPXXN" target="_blank" class="block w-full bg-whatsapp-500 hover:bg-whatsapp-600 text-white py-3 px-6 rounded-xl font-bold transition shadow-lg shadow-whatsapp-500/20">
+                        🚀 Assinar Prata
+                    </a>
+                </div>
+
+                <!-- Plano Ouro -->
+                <div class="bg-gray-800/50 border border-gray-700/50 rounded-2xl p-8 text-center hover:border-gray-600 transition">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-yellow-400 mb-1">Ouro</h3>
+                        <p class="text-sm text-gray-500">Anual</p>
+                    </div>
+                    <div class="mb-2">
+                        <span class="text-4xl font-extrabold">R$797</span>
+                        <span class="text-gray-400">/ano</span>
+                    </div>
+                    <p class="text-sm text-yellow-400 mb-6">≈ R$66/mês · Economize 32%</p>
+                    <ul class="text-sm text-gray-300 space-y-3 mb-8 text-left">
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Todas as funcionalidades
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Modo comportamento humano
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Envio de arquivos/mídias
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Atualizações inclusas
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Suporte VIP
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-whatsapp-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Máxima economia
+                        </li>
+                    </ul>
+                    <a href="https://pay.kiwify.com.br/ALtN1gO" target="_blank" class="block w-full bg-gray-700 hover:bg-gray-600 text-white py-3 px-6 rounded-xl font-semibold transition">
+                        Assinar Ouro
+                    </a>
+                </div>
+            </div>
+            <p class="text-center text-gray-500 text-sm mt-8">Pagamento seguro via Kiwify. Acesso imediato após confirmação.</p>
+        </div>
+    </section>
+
+
+    <!-- FAQ -->
+    <section id="faq" class="py-20 sm:py-28 bg-gray-950">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Perguntas Frequentes</h2>
+                <p class="text-gray-400 text-lg">Tire suas dúvidas sobre o AutoSendZap</p>
+            </div>
+            <div class="space-y-4">
+                <!-- FAQ 1 -->
+                <details class="group bg-gray-800/50 border border-gray-700/50 rounded-xl">
+                    <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold">
+                        <span>Preciso de API paga do WhatsApp?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                        <strong>Não!</strong> O AutoSendZap funciona diretamente pelo WhatsApp Web usando seu navegador Chrome. Você não precisa de nenhuma API paga, nem da API oficial do WhatsApp Business. Basta ter o WhatsApp no celular e escanear o QR Code uma vez.
+                    </div>
+                </details>
+                <!-- FAQ 2 -->
+                <details class="group bg-gray-800/50 border border-gray-700/50 rounded-xl">
+                    <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold">
+                        <span>Minha conta pode ser bloqueada?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                        O AutoSendZap foi desenvolvido com múltiplas camadas de proteção: modo comportamento humano (digitação real, pausas naturais), delays aleatórios com distribuição gaussiana, envio por rodadas, respeita horário comercial e pula finais de semana. Isso reduz drasticamente o risco. Porém, recomendamos sempre enviar para contatos que têm relação com você e usar mensagens personalizadas.
+                    </div>
+                </details>
+                <!-- FAQ 3 -->
+                <details class="group bg-gray-800/50 border border-gray-700/50 rounded-xl">
+                    <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold">
+                        <span>Funciona em qualquer computador?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                        Funciona em qualquer PC com Windows que tenha o Google Chrome instalado. O ChromeDriver é baixado automaticamente. Não precisa instalar nada além do próprio AutoSendZap.
+                    </div>
+                </details>
+                <!-- FAQ 4 -->
+                <details class="group bg-gray-800/50 border border-gray-700/50 rounded-xl">
+                    <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold">
+                        <span>Preciso escanear o QR Code toda vez?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                        Não. O AutoSendZap salva sua sessão do WhatsApp Web localmente. Após escanear o QR Code na primeira vez, as próximas execuções fazem login automático sem precisar do celular.
+                    </div>
+                </details>
+                <!-- FAQ 5 -->
+                <details class="group bg-gray-800/50 border border-gray-700/50 rounded-xl">
+                    <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold">
+                        <span>Quantas mensagens posso enviar por dia?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                        Não há limite no software. Você configura quantidade por rodada (até 50), total de rodadas (até 100) e intervalos. Recomendamos começar com volumes menores (30-50/dia) e ir aumentando conforme a maturidade da conta.
+                    </div>
+                </details>
+                <!-- FAQ 6 -->
+                <details class="group bg-gray-800/50 border border-gray-700/50 rounded-xl">
+                    <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold">
+                        <span>Posso enviar imagens, PDFs e áudios?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                        Sim! O AutoSendZap suporta envio de imagens (.jpg, .png), documentos PDF, áudios (.mp3, .ogg, .opus) e múltiplos arquivos por contato. Eles são enviados como documentos para preservar a qualidade original.
+                    </div>
+                </details>
+                <!-- FAQ 7 -->
+                <details class="group bg-gray-800/50 border border-gray-700/50 rounded-xl">
+                    <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold">
+                        <span>Meus dados ficam seguros?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                        Totalmente. O AutoSendZap roda 100% no seu computador. Seus contatos, mensagens e arquivos nunca saem da sua máquina. Não usamos servidores externos nem armazenamos nenhum dado seu na nuvem.
+                    </div>
+                </details>
+                <!-- FAQ 8 -->
+                <details class="group bg-gray-800/50 border border-gray-700/50 rounded-xl">
+                    <summary class="flex items-center justify-between cursor-pointer p-6 font-semibold">
+                        <span>Como recebo o acesso após o pagamento?</span>
+                        <svg class="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-gray-400 text-sm leading-relaxed">
+                        Após a confirmação do pagamento, você recebe imediatamente o link de download e sua chave de ativação por e-mail. A instalação leva menos de 2 minutos e você já pode começar a usar.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CTA FINAL -->
+    <section class="py-20 sm:py-28 bg-gray-900 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-72 h-72 bg-whatsapp-500 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-whatsapp-600 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-6">
+                Pare de Enviar Mensagens <span class="text-whatsapp-400">Uma por Uma</span>
+            </h2>
+            <p class="text-lg sm:text-xl text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Enquanto você lê isso, seus concorrentes já estão automatizando. Comece hoje e economize horas do seu dia com envios inteligentes e seguros.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://pay.kiwify.com.br/R2KPXXN" target="_blank" class="bg-whatsapp-500 hover:bg-whatsapp-600 text-white px-10 py-4 rounded-xl font-bold text-lg transition shadow-lg shadow-whatsapp-500/30">
+                    🚀 Começar Agora — Plano Prata
+                </a>
+                <a href="#precos" class="border border-gray-600 hover:border-gray-400 text-gray-300 px-10 py-4 rounded-xl font-semibold text-lg transition">
+                    Ver Todos os Planos
+                </a>
+            </div>
+            <div class="mt-10 flex flex-wrap justify-center gap-6 text-sm text-gray-400">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    Pagamento seguro
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    Acesso imediato
+                </div>
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-whatsapp-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Suporte dedicado
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-950 border-t border-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-2">
+                    <svg class="w-6 h-6 text-whatsapp-500" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    <span class="text-lg font-bold">Auto<span class="text-whatsapp-500">SendZap</span></span>
+                </div>
+                <div class="flex items-center gap-6 text-sm text-gray-500">
+                    <a href="#como-funciona" class="hover:text-gray-300 transition">Como Funciona</a>
+                    <a href="#features" class="hover:text-gray-300 transition">Recursos</a>
+                    <a href="#precos" class="hover:text-gray-300 transition">Preços</a>
+                    <a href="#faq" class="hover:text-gray-300 transition">FAQ</a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-sm text-gray-600">
+                <p>&copy; 2025 AutoSendZap. Todos os direitos reservados.</p>
+                <p class="mt-2">Este produto não é afiliado, associado, autorizado ou endossado pelo WhatsApp Inc.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
